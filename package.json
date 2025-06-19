@@ -1,0 +1,171 @@
+{
+  "name": "my-activity-bar-extension",
+  "displayName": "My Activity Bar Extension",
+  "description": "Adds a custom icon to the activity bar",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onStartupFinished",
+    "*"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "myCustomView",
+          "title": "My Custom View",
+          "icon": "$(star)"
+        }
+      ],
+      "panel": [
+        {
+          "id": "myPanelContainer",
+          "title": "My Panel Tab",
+          "icon": "$(tools)"
+        }
+      ]
+    },
+    "views": {
+      "myCustomView": [
+        {
+          "id": "myCustomPanel",
+          "name": "My Custom Panel",
+          "when": "myCustomView:enabled"
+        },
+        {
+          "id": "myNewAccordion",
+          "name": "Project Manager",
+          "when": "myCustomView:enabled"
+        }
+      ],
+      "myPanelContainer": [
+        {
+          "id": "myThirdPanel",
+          "name": "Notes & Tasks",
+          "when": "myPanelContainer:enabled"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "myExtension.test",
+        "title": "Test My Extension"
+      },
+      {
+        "command": "myNewAccordion.refresh",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "myNewAccordion.itemClick",
+        "title": "Click Item"
+      },
+      {
+        "command": "myExtension.statusBarClick",
+        "title": "Status Bar Click"
+      },
+      {
+        "command": "myThirdPanel.addItem",
+        "title": "Add Item",
+        "icon": "$(add)"
+      },
+      {
+        "command": "myThirdPanel.removeItem",
+        "title": "Remove Item",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "myThirdPanel.editItem",
+        "title": "Edit Item",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "myExtension.openCustomEditor",
+        "title": "Open My Custom Editor",
+        "icon": "$(notebook)"
+      },
+      {
+        "command": "myExtension.editorToolbarAction",
+        "title": "My Editor Action",
+        "icon": "$(rocket)"
+      },
+      {
+        "command": "myExtension.simpleEditorAction",
+        "title": "Simple Action",
+        "icon": "$(gear)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "myNewAccordion.refresh",
+          "when": "view == myNewAccordion",
+          "group": "navigation"
+        },
+        {
+          "command": "myThirdPanel.addItem",
+          "when": "view == myThirdPanel",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "myThirdPanel.editItem",
+          "when": "view == myThirdPanel && viewItem == thirdPanelItem",
+          "group": "inline"
+        },
+        {
+          "command": "myThirdPanel.removeItem",
+          "when": "view == myThirdPanel && viewItem == thirdPanelItem",
+          "group": "inline"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "myExtension.editorToolbarAction",
+          "group": "navigation",
+          "when": "resourceExtname"
+        },
+        {
+          "command": "myExtension.simpleEditorAction",
+          "group": "navigation@1",
+          "when": "activeEditor"
+        }
+      ]
+    },
+    "customEditors": [
+      {
+        "viewType": "myExtension.customEditor",
+        "displayName": "My Custom Editor",
+        "selector": [
+          {
+            "filenamePattern": "*.myext"
+          }
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "@typescript-eslint/eslint-plugin": "^5.45.0",
+    "@typescript-eslint/parser": "^5.45.0",
+    "eslint": "^8.28.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "typescript": "^4.9.4",
+    "@vscode/test-electron": "^2.2.0"
+  }
+}
